@@ -1,4 +1,4 @@
 .idea
-copy.sh
+copy*
 package.sh
 libs
