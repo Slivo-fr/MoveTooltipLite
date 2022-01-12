@@ -1,7 +1,7 @@
 ## Interface: 20502
-## Title: MoveTooltipLite |cff00aa00v1.0.0-BETA2|r
+## Title: MoveTooltipLite |cff00aa00v1.0.0|r
 ## Author: Slivo
-## Version: 1.0.0-BETA2
+## Version: 1.0.0
 ## OptionalDeps: Ace3
 ## SavedVariables: MoveTooltipLiteDB
 
