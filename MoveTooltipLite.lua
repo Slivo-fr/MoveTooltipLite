@@ -53,7 +53,6 @@ end)
 -- Set Tooltip position
 function MoveTooltipLite:handleTooltip(tooltip)
     if (MoveTooltipLite.db.char.lock) then
-        tooltip:SetOwner(UIParent, "ANCHOR_NONE")
         tooltip:ClearAllPoints()
         tooltip:SetPoint("BOTTOMRIGHT", UIParent, 'BOTTOMLEFT', MoveTooltipLite.db.char.x, MoveTooltipLite.db.char.y)
     end
