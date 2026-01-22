@@ -1,4 +1,4 @@
-MoveTooltipLite = LibStub("AceAddon-3.0"):NewAddon("MoveTooltipLite", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
+MoveTooltipLite = LibStub("AceAddon-3.0"):NewAddon("MoveTooltipLite", "AceConsole-3.0")
 
 MoveTooltipLite.dragFrame = CreateFrame("Frame", 'dragFrame', UIParent)
 
@@ -10,53 +10,14 @@ MoveTooltipLite.dragFrame:SetScript(
         if (event == "PLAYER_LOGIN") then
             MoveTooltipLite:init()
             self:UnregisterEvent("PLAYER_LOGIN")
+
+            -- Hook the tooltip position
+            hooksecurefunc("GameTooltip_SetDefaultAnchor", function(tooltip)
+                MoveTooltipLite:handleTooltip(tooltip)
+            end)
         end
     end
 )
-
--- Right click event to lock
-MoveTooltipLite.dragFrame:SetScript(
-    "OnMouseDown",
-    function(self, button)
-        if (button == 'RightButton') then
-            MoveTooltipLite:lock()
-        end
-    end
-)
-
--- Show dragFrame and unlock position
-function MoveTooltipLite:unlock()
-    MoveTooltipLite.dragFrame:Show()
-    MoveTooltipLite.db.char.lock = false
-end
-
--- Show dragFrame and unlock position
-function MoveTooltipLite:reset()
-    MoveTooltipLite.db.char = {}
-    MoveTooltipLite.dragFrame:ClearAllPoints()
-    MoveTooltipLite.dragFrame:SetPoint("CENTER", UIParent, "CENTER")
-    MoveTooltipLite:unlock()
-end
-
--- Hide dragFrame save tooltip position
-function MoveTooltipLite:lock()
-    MoveTooltipLite.dragFrame:Hide()
-    MoveTooltipLite.db.char.lock = true
-    MoveTooltipLite:Print("Tooltip position saved, use /mtl unlock to set a new position")
-end
-
--- Hook the tooltip position function with AceHook
-function MoveTooltipLite:OnEnable()
-    self:SecureHook("GameTooltip_SetDefaultAnchor", "handleTooltip")
-end
-
--- Set Tooltip position
-function MoveTooltipLite:handleTooltip(tooltip, parent)
-    if (MoveTooltipLite.db.char.lock) then
-        tooltip:ClearAllPoints()
-        tooltip:SetPoint("BOTTOMRIGHT", UIParent, 'BOTTOMLEFT', MoveTooltipLite.db.char.x, MoveTooltipLite.db.char.y)
-    end
-end
 
 -- addon initialization
 function MoveTooltipLite:init()
@@ -69,6 +30,14 @@ function MoveTooltipLite:init()
 
     MoveTooltipLite:createDragFrame()
     MoveTooltipLite:configureDragAndDrop()
+end
+
+-- Set Tooltip position
+function MoveTooltipLite:handleTooltip(tooltip, parent)
+    if (MoveTooltipLite.db.char.lock) then
+        tooltip:ClearAllPoints()
+        tooltip:SetPoint("BOTTOMRIGHT", UIParent, 'BOTTOMLEFT', MoveTooltipLite.db.char.x, MoveTooltipLite.db.char.y)
+    end
 end
 
 -- Create the drag frame
@@ -122,6 +91,37 @@ function MoveTooltipLite:configureDragAndDrop()
             MoveTooltipLite.db.char.x = MoveTooltipLite.dragFrame:GetRight()
         end
     )
+end
+
+-- Right click event to lock
+MoveTooltipLite.dragFrame:SetScript(
+    "OnMouseDown",
+    function(self, button)
+        if (button == 'RightButton') then
+            MoveTooltipLite:lock()
+        end
+    end
+)
+
+-- Show dragFrame and unlock position
+function MoveTooltipLite:unlock()
+    MoveTooltipLite.dragFrame:Show()
+    MoveTooltipLite.db.char.lock = false
+end
+
+-- Show dragFrame and unlock position
+function MoveTooltipLite:reset()
+    MoveTooltipLite.db.char = {}
+    MoveTooltipLite.dragFrame:ClearAllPoints()
+    MoveTooltipLite.dragFrame:SetPoint("CENTER", UIParent, "CENTER")
+    MoveTooltipLite:unlock()
+end
+
+-- Hide dragFrame save tooltip position
+function MoveTooltipLite:lock()
+    MoveTooltipLite.dragFrame:Hide()
+    MoveTooltipLite.db.char.lock = true
+    MoveTooltipLite:Print("Tooltip position saved, use /mtl unlock to set a new position")
 end
 
 -- Chat commands
