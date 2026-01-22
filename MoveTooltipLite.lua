@@ -10,11 +10,6 @@ MoveTooltipLite.dragFrame:SetScript(
         if (event == "PLAYER_LOGIN") then
             MoveTooltipLite:init()
             self:UnregisterEvent("PLAYER_LOGIN")
-
-            -- Hook the tooltip position
-            hooksecurefunc("GameTooltip_SetDefaultAnchor", function(tooltip)
-                MoveTooltipLite:handleTooltip(tooltip)
-            end)
         end
     end
 )
@@ -30,6 +25,11 @@ function MoveTooltipLite:init()
 
     MoveTooltipLite:createDragFrame()
     MoveTooltipLite:configureDragAndDrop()
+
+    -- Hook the tooltip position once DB is loaded
+    hooksecurefunc("GameTooltip_SetDefaultAnchor", function(tooltip)
+        MoveTooltipLite:handleTooltip(tooltip)
+    end)
 end
 
 -- Set Tooltip position
