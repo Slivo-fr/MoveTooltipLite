@@ -2,3 +2,5 @@
 copy*
 package.sh
 libs
+.release
+.vscode

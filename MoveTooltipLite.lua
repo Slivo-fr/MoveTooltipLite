@@ -1,4 +1,4 @@
-MoveTooltipLite = LibStub("AceAddon-3.0"):NewAddon("MoveTooltipLite", "AceConsole-3.0")
+MoveTooltipLite = LibStub("AceAddon-3.0"):NewAddon("MoveTooltipLite", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 
 MoveTooltipLite.dragFrame = CreateFrame("Frame", 'dragFrame', UIParent)
 
@@ -45,13 +45,13 @@ function MoveTooltipLite:lock()
     MoveTooltipLite:Print("Tooltip position saved, use /mtl unlock to set a new position")
 end
 
--- Hook the tooltip position function
-hooksecurefunc("GameTooltip_SetDefaultAnchor", function(tooltip)
-    MoveTooltipLite:handleTooltip(tooltip)
-end)
+-- Hook the tooltip position function with AceHook
+function MoveTooltipLite:OnEnable()
+    self:SecureHook("GameTooltip_SetDefaultAnchor", "handleTooltip")
+end
 
 -- Set Tooltip position
-function MoveTooltipLite:handleTooltip(tooltip)
+function MoveTooltipLite:handleTooltip(tooltip, parent)
     if (MoveTooltipLite.db.char.lock) then
         tooltip:ClearAllPoints()
         tooltip:SetPoint("BOTTOMRIGHT", UIParent, 'BOTTOMLEFT', MoveTooltipLite.db.char.x, MoveTooltipLite.db.char.y)
@@ -143,4 +143,5 @@ local options = {
         },
     }
 }
+
 LibStub("AceConfig-3.0"):RegisterOptionsTable("MoveTooltipLite", options, {"movetooltiplite", "mtl"})
