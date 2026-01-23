@@ -1,4 +1,4 @@
-## Interface: 120000, 110007, 50503, 20505
+## Interface: 120000, 50503, 40402, 38000, 30405, 20505, 11508
 ## Title: MoveTooltipLite |cff00aa00v1.0.3|r
 ## Author: Slivo
 ## Version: 1.0.3
